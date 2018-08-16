@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import FormHelper from '../services/FormHelper'
 import ApiHelper from '../services/ApiHelper'
 
-class NewPerson extends Component {
+class NewUser extends Component {
   constructor(props) {
     super(props);
 
@@ -10,6 +10,7 @@ class NewPerson extends Component {
       firstName: '',
       lastName: '',
       email: '',
+      password: '',
       errors: {}
     };
 
@@ -22,12 +23,13 @@ class NewPerson extends Component {
     e.preventDefault();
     console.log(this.state)
     if (this.validate()) {
-      ApiHelper.post('/person', {
+      ApiHelper.post('/users', {
         firstName: this.state.firstName,
         lastName: this.state.lastName,
-        email: this.state.email
+        email: this.state.email,
+        password: this.state.password
       })
-      this.props.history.push('/person/list')
+      this.props.history.push('/users')
     }
   }
 
@@ -50,12 +52,13 @@ class NewPerson extends Component {
   render() {
     return (
       <div>
-        <div><h1>New Person</h1></div>
+        <div><h1>New User</h1></div>
         <form>
           <div className="container">
             <input onChange={this.handleChange} type="text" placeholder="First Name" name="firstName" id="firstName" required/>
             <input onChange={this.handleChange} type="text" placeholder="Last Name" name="lastName" id="lastName" required/>
             <input onChange={this.handleChange} type="text" placeholder="Email" name="email" id="email" required/>
+            <input onChange={this.handleChange} type="password" placeholder="Password" name="password" id="password" required/>
             <button type="submit" onClick={this.handleSubmit}>Submit</button>
           </div>
         </form>
@@ -64,4 +67,4 @@ class NewPerson extends Component {
   }
 }
 
-export default NewPerson;
+export default NewUser;

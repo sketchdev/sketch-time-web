@@ -1,51 +1,29 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import StyledTable from '../components/StyledTable';
 
 class Table extends Component {
   render() {
     return (
       <StyledTable>
         <thead>
-          <StyledRow>
+          <tr>
             { this.props.headers.map((header, index) => {
-              return <StyledHeader key={index}>{header.title}</StyledHeader>;
+              return <th key={index}>{header.title}</th>;
             })}
-          </StyledRow>
+          </tr>
         </thead>
         <tbody>
-          { this.props.list.map((l, index) => {
-            return <StyledRow key={index}>
+          { this.props.list && this.props.list.map((l, index) => {
+            return <tr key={index}>
               { this.props.headers.map((header, index) => {
-                return <StyleData key={index}>{l[header.field]}</StyleData>;
+                return <td key={index}>{l[header.field]}</td>;
               })}
-            </StyledRow>;
+            </tr>;
           })}
         </tbody>
       </StyledTable>
     );
   }
 }
-
-const StyledTable = styled.table`
-  border-collapse: collapse;
-  width: 100%;
-  margin-bottom: 20px;
-`;
-
-const StyledRow = styled.tr`
-   :nth-child(even) {
-     background-color: var(--overcast);
-   }
-`;
-
-const StyleData = styled.td`
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-`;
-
-const StyledHeader = StyleData.extend`
-  font-weight: 600;
-`;
 
 export default Table;

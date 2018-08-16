@@ -24,14 +24,14 @@ class NewClient extends Component {
     e.preventDefault();
     console.log(this.state)
     if (this.validate()) {
-      ApiHelper.post('/client', {
+      ApiHelper.post('/clients', {
         name: this.state.name,
         address: this.state.address,
         city: this.state.city,
         state: this.state.state,
         zip: this.state.zip
       })
-      this.props.history.push('/client/list')
+      this.props.history.push('/clients')
     }
   }
 

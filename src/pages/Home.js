@@ -17,8 +17,8 @@ class Home extends Component {
     return (
       <Main>
         <Header>
-          <img height={'50px'} width={'50px'} className={'pull-left'} src={require('../images/sketchTime.jpg')} alt={'Sketch-Time'}/>
-          <Title>Sketch-Time</Title>
+          <img height={'60px'} width={'60px'} className={'pull-left'} src={require('../images/clock.png')} alt={'SketchTime'}/>
+          <Title>SketchTime</Title>
         </Header>
         <Body>
           <form onSubmit={this.handleSubmit}>
@@ -45,11 +45,12 @@ const Main = styled.div`
 const Header = styled.div`
   font-size: 20px;
   margin: 35px auto;
-  width: 250px;
+  width: 275px;
 `;
 
-const Title = styled.p`
+const Title = styled.h1`
   padding-top: 5px;
+  
 `;
 
 const Body = styled.div`
@@ -64,7 +65,6 @@ const Body = styled.div`
 
 const Login = styled.div`
   font-weight: 300;
-  color: var(--warm-gray);
   margin: 0 auto 45px;
   font-size: 35px;
 `

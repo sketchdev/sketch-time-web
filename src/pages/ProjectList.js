@@ -13,7 +13,7 @@ class ProjectList extends Component {
   }
 
   componentDidMount() {
-    ApiHelper.get('/project')
+    ApiHelper.get('/projects')
       .then(response => {
         this.setState({
           projects: response.data
@@ -27,9 +27,7 @@ class ProjectList extends Component {
     return (
       <div style={{marginTop: '20px'}}>
         <h1 className={'pull-left'}>Projects</h1>
-        <button className={'btn-small pull-right'}>
-          <Link to={'/project/new'}>New Project</Link>
-        </button>
+        <Link to={'/projects/new'}><button className={'btn-small pull-right'}>New Project</button></Link>
         <Table
           headers={[
             {title: 'Name', field: 'name'},

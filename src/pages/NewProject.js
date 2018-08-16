@@ -25,7 +25,7 @@ class NewProject extends Component {
     e.preventDefault();
     console.log(this.state)
     if (this.validate()) {
-      ApiHelper.post('/project', {
+      ApiHelper.post('/projects', {
         name: this.state.name,
         startDate: this.state.startDate ? moment(this.state.startDate) : '',
         endDate: this.state.endDate ? moment(this.state.endDate) : '',
@@ -33,7 +33,7 @@ class NewProject extends Component {
         code: this.state.code,
         description: this.state.description
       })
-      this.props.history.push('/project/list')
+      this.props.history.push('/projects')
     }
   }
 
@@ -54,10 +54,10 @@ class NewProject extends Component {
         <form>
           <div className="container">
             <input onChange={this.handleChange} type="text" placeholder="Name" id="name" required/>
-            <label><b>Start Date</b></label>
-            <input style={{marginTop: '0'}} onChange={this.handleChange} type="date" placeholder="Start Date" id="startDate" />
-            <label><b>End Date</b></label>
-            <input style={{marginTop: '0'}} onChange={this.handleChange} type="date" placeholder="End Date" id="endDate" />
+            <input onChange={this.handleChange} type="text" placeholder="Start Date" id="startDate" />
+            <small>MM/DD/YYYY</small>
+            <input onChange={this.handleChange} type="text" placeholder="End Date" id="endDate" />
+            <small>MM/DD/YYYY</small>
             <input onChange={this.handleChange} type="text" placeholder="Client" id="client" />
             <input onChange={this.handleChange} type="text" placeholder="Code" id="code" />
             <input onChange={this.handleChange} type="text" placeholder="Description" id="description" />

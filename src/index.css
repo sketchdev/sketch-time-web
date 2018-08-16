@@ -1,8 +1,9 @@
 :root {
-  --overcast:#F1F1F2;
-  --warm-gray:#BCBABE;
-  --ice:#A1D6E2;
-  --glacier-blue:#1995AD;
+  --darkblue:#225378;
+  --lightblue:#1695A3;
+  --green:#ACF0F2;
+  --tan:#F3FFE2;
+  --orange:#EB7F00;
 }
 
 html {
@@ -10,34 +11,50 @@ html {
 }
 
 body {
+  font-weight: 300;
   margin: 0;
   padding: 0;
   height: auto;
-  font-family: opensans-serif, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   max-width: 100%;
+}
+
+input, label, textarea, select, button {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-weight: 300;
+}
+
+h1, h2, h3, h4, h5 {
+  font-weight: 300;
+  letter-spacing: 1px;
 }
 
 button {
   color: white;
-  background: var(--glacier-blue);
+  background: var(--darkblue);
   border: 0;
-  font-weight: 600;
   font-size: 18px;
   text-align: center;
   cursor: pointer;
   width: 100%;
   display: block;
   border-radius: 3px;
-  padding: 15px;
-}
-
-button > a {
-  text-decoration: none;
-  color: var(--overcast);
+  padding: .7rem 1rem;
+  letter-spacing: 1px;
 }
 
 .btn-small {
   width: auto;
+}
+
+.btn-secondary {
+  background: var(--orange);
+  margin-right: .5rem;
+  text-decoration: none;
+}
+
+a {
+  text-decoration: none;
 }
 
 .pull-right {
@@ -53,10 +70,10 @@ input {
   border: 2px solid #e7e7e7;
   display: block;
   border-radius: 3px;
-  font-size: 18px;
+  font-size: 15px;
   text-align: left;
   width: 100%;
-  padding: 15px;
+  padding: 10px;
   margin: 20px auto;
   box-sizing : border-box;
 }

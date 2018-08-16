@@ -13,7 +13,7 @@ class ClientList extends Component {
   }
 
   componentDidMount() {
-    ApiHelper.get('/client')
+    ApiHelper.get('/clients')
       .then(response => {
         this.setState({
           clients: response.data
@@ -28,9 +28,7 @@ class ClientList extends Component {
       <div>
         <div style={{marginTop: '20px'}}>
           <h1 className={'pull-left'}>Clients</h1>
-          <button className={'btn-small pull-right'}>
-            <Link to={'/client/new'}>New Client</Link>
-          </button>
+          <Link to={'/clients/new'}><button className={'btn-small pull-right'}>New Client</button></Link>
         </div>
         <Table
           headers={[

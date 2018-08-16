@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import ApiHelper from '../services/ApiHelper'
 import Table from '../components/Table'
 
-class PersonList extends Component {
+class UserList extends Component {
   constructor(props) {
     super(props);
 
@@ -13,7 +13,7 @@ class PersonList extends Component {
   }
 
   componentDidMount() {
-    ApiHelper.get('/person')
+    ApiHelper.get('/users')
       .then(response => {
         this.setState({
           people: response.data
@@ -27,10 +27,8 @@ class PersonList extends Component {
     return (
       <div>
         <div style={{marginTop: '20px'}}>
-          <h1 className={'pull-left'}>People</h1>
-          <button className={'btn-small pull-right'}>
-            <Link to={'/person/new'}>New Person</Link>
-          </button>
+          <h1 className={'pull-left'}>Users</h1>
+          <Link to={'/users/new'}><button className={'btn-small pull-right'}>New User</button></Link>
         </div>
         <Table
           headers={[
@@ -45,4 +43,4 @@ class PersonList extends Component {
   }
 }
 
-export default PersonList;
+export default UserList;

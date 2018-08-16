@@ -7,13 +7,13 @@ class Sidebar extends Component {
     return (
       <SideNav>
         <div className={'header'}>
-          <img height={'30px'} width={'30px'} className={'pull-left'} src={require('../images/sketchTime.jpg')} alt={'Sketch-Time'}/>
-          <p className={'title'}>Sketch-Time</p>
+          <img height={'30px'} width={'30px'} className={'pull-left'} src={require('../images/clockwhite.png')} alt={'Sketch-Time'}/>
+          <p className={'title'}>SketchTime</p>
         </div>
         <NavLink to={'/dashboard'}>Dashboard</NavLink>
-        <NavLink to={'/person/list'}>People</NavLink>
-        <NavLink to={'/project/list'}>Projects</NavLink>
-        <NavLink to={'/client/list'}>Clients</NavLink>
+        <NavLink to={'/users'}>Users</NavLink>
+        <NavLink to={'/projects'}>Projects</NavLink>
+        <NavLink to={'/clients'}>Clients</NavLink>
         <NavLink to={'/settings'}>Settings</NavLink>
       </SideNav>
     );
@@ -28,18 +28,21 @@ const SideNav = styled.div`
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: var(--glacier-blue);
+    background-color: var(--darkblue);
     overflow-x: hidden;
     padding-top: 25px;
+    letter-spacing: 1px;
     
     & a {
-      padding: 15px 8px 10px 16px;
+      padding: 1rem 1.5rem;
       text-decoration: none;
-      font-size: 25px;
-      color: var(--ice);
+      font-size: 20px;
+      color: var(--orange);
+      text-transform: uppercase;
+      text-align: right;
       display: block;
-      & :hover {
-        color: LightGray;
+      &:hover {
+        color: var(--lightblue);
       }
     }
     
@@ -47,8 +50,8 @@ const SideNav = styled.div`
       padding: 0 0 0 5px;
       margin: 10px;
       font-size: 25px;
-      color: var(--overcast);
-      border-bottom: 2px solid var(--overcast);
+      color: whitesmoke;
+      border-bottom: 2px solid whitesmoke;
     }
     
     & .title {
