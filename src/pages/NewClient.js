@@ -30,8 +30,17 @@ class NewClient extends Component {
         city: this.state.city,
         state: this.state.state,
         zip: this.state.zip
-      })
-      this.props.history.push('/clients')
+      }).then(response => {
+        if (response.errors) {
+          if (response.clientError) {
+            //TODO: Handle Errors
+          }
+        } else {
+          this.props.history.push('/clients')
+        }
+      }, (err) => {
+        console.log(err);
+      });
     }
   }
 

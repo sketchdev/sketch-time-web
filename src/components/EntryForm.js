@@ -44,29 +44,16 @@ class EntryForm extends Component {
             <tbody>
             {
               (this.props.data.entries && this.props.data.entries.length > 0) && this.props.data.entries.map((e, entriesIndex) => {
-                return <tr key={entriesIndex}>
-                  <td>{this.props.data.projects.find(p => { return e.project_id === p.id }).name}</td>
+                return <tr key={'entry'+entriesIndex}>
+                  <td>
+                    {this.props.data.projects.find(p => { return e.project_id === p.id }).name}
+                  </td>
                     { e.hours.map((h, hoursIndex) => {
-                      return <td>
-                        <input key={hoursIndex} onChange={(e) => this.props.handleHourChange(e, entriesIndex)} onBlur={(e) => this.props.handleHourBlur(e, 'sun', entriesIndex)} type="text" placeholder="0.0" />
+                      return <td key={'day'+hoursIndex}>
+                        <input value={h} onChange={(e) => this.props.handleHourChange(e, entriesIndex, hoursIndex)} onBlur={(e) => this.props.handleHourBlur(e, entriesIndex, hoursIndex)} type="text" placeholder="0.0" />
                       </td>
-
                     })
-                    }<td/>
-                </tr>
-              })
-            }
-            {
-              (this.props.data.userProjects && this.props.data.userProjects.length > 0) && this.props.data.userProjects.map((up, i) => {
-                return <tr key={i}>
-                  <td>{this.props.data.projects.find(p => { return up === p.id }).name}</td>
-                  <td><input onChange={(e) => this.props.handleHourChange(e, 'sun', i)} onBlur={(e) => this.props.handleHourBlur(e, 'sun', i)} type="text" placeholder="0.0" /></td>
-                  <td><input onChange={(e) => this.props.handleHourChange(e, 'mon', i)} onBlur={(e) => this.props.handleHourBlur(e, 'mon', i)} type="text" placeholder="0.0" /></td>
-                  <td><input onChange={(e) => this.props.handleHourChange(e, 'tue', i)} onBlur={(e) => this.props.handleHourBlur(e, 'tue', i)} type="text" placeholder="0.0" /></td>
-                  <td><input onChange={(e) => this.props.handleHourChange(e, 'wed', i)} onBlur={(e) => this.props.handleHourBlur(e, 'wed', i)} type="text" placeholder="0.0" /></td>
-                  <td><input onChange={(e) => this.props.handleHourChange(e, 'thu', i)} onBlur={(e) => this.props.handleHourBlur(e, 'thu', i)} type="text" placeholder="0.0" /></td>
-                  <td><input onChange={(e) => this.props.handleHourChange(e, 'fri', i)} onBlur={(e) => this.props.handleHourBlur(e, 'fri', i)} type="text" placeholder="0.0" /></td>
-                  <td><input onChange={(e) => this.props.handleHourChange(e, 'sat', i)} onBlur={(e) => this.props.handleHourBlur(e, 'sat', i)} type="text" placeholder="0.0" /></td>
+                    }
                   <td/>
                 </tr>
               })
@@ -165,6 +152,11 @@ const TimeDiv = styled.table`
     border-bottom: 1px solid lightgray;
     text-align: left;
     padding: 8px;
+    
+    &:first-child {
+      word-wrap: break-spaces;
+      min-width: 10rem;
+    }
   }
 `;
 

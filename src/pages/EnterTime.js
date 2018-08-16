@@ -39,25 +39,36 @@ class EnterTime extends Component {
       }, (err) => {
         console.log(err);
       });
-    let entries = await ApiHelper.get(`/entries?user_id=${this.state.userId}&week=${this.state.week}&year=${this.state.year}`)
+    let userEntries = await ApiHelper.get(`/entries?user_id=${this.state.userId}&week=${this.state.week}&year=${this.state.year}`)
       .then(response => {
-        console.log(response.data)
         return response.data;
       }, (err) => {
         console.log(err);
       });
     let userProjects = await ApiHelper.get('/user_projects?user_id=test')
       .then(response => {
-        console.log(response.data)
         return response.data;
       }, (err) => {
         console.log(err);
       });
 
+    let entryProjects = userEntries.map(e => { return e.project_id; })
+
+    let newEntries = [];
+    userProjects[0].projects.forEach(up => {
+      if (!entryProjects.includes(up)) {
+        let entry = {
+          project_id: up,
+          hours: ['', '', '', '', '', '', '']
+        }
+        newEntries.push(entry);
+      }
+    })
+
     this.setState({
       projects,
       userProjects: userProjects[0].projects,
-      entries
+      entries: userEntries.concat(newEntries)
     })
   }
 
@@ -65,6 +76,12 @@ class EnterTime extends Component {
     const week = this.props.match.params.week;
     const year = this.props.match.params.year;
     if (prevState.week !== week || prevState.year !== year) {
+      let userEntries = await ApiHelper.get(`/entries?user_id=${this.state.userId}&week=${this.state.week}&year=${this.state.year}`)
+        .then(response => {
+          return response.data;
+        }, (err) => {
+          console.log(err);
+        });
       let userProjects = await ApiHelper.get('/user_projects?user_id=test')
         .then(response => {
           return response.data;
@@ -72,30 +89,48 @@ class EnterTime extends Component {
           console.log(err);
         });
 
+      let entryProjects = userEntries.map(e => { return e.project_id; })
+
+      let newEntries = [];
+      userProjects[0].projects.forEach(up => {
+        if (!entryProjects.includes(up)) {
+          let entry = {
+            project_id: up,
+            hours: ['', '', '', '', '', '', '']
+          }
+          newEntries.push(entry);
+        }
+      })
+
       this.setState({
-        week, year, userProjects: userProjects[0].projects
+        week, year,
+        userProjects: userProjects[0].projects,
+        entries: userEntries.concat(newEntries)
       })
     }
   }
 
   handleSubmit(e) {
     e.preventDefault();
-
-    if (this.state.id) {
-      ApiHelper.put('/week/' + this.state.id, {
-        userId: this.state.userId,
-        week: this.state.week,
-        year: this.state.year,
-        hours: this.state.hours
-      })
-    } else {
-      ApiHelper.post('/week', {
-        userId: this.state.userId,
-        week: this.state.week,
-        year: this.state.year,
-        hours: this.state.hours
-      })
-    }
+    this.state.entries.forEach(entry => {
+      if (entry.id) {
+        ApiHelper.put('/entries/' + entry.id, {
+          user_id: this.state.userId,
+          week: this.state.week,
+          year: this.state.year,
+          hours: entry.hours,
+          project_id: entry.project_id
+        })
+      } else {
+        ApiHelper.post('/entries', {
+          user_id: this.state.userId,
+          week: this.state.week,
+          year: this.state.year,
+          hours: entry.hours,
+          project_id: entry.project_id
+        })
+      }
+    })
   }
 
   handleWeekChange(e, value) {
@@ -109,30 +144,36 @@ class EnterTime extends Component {
     }
   }
 
-  handleHourChange(e, day, index) {
+  handleHourChange(e, entriesIndex, hoursIndex) {
     e.preventDefault();
     const value = e.target.value;
-    this.setState((prevState, props) => ({
-      hours: [
-        ...prevState.hours.slice(0,index),
-        Object.assign({}, prevState.hours[index], {[day]: value}),
-        ...prevState.hours.slice(index+1)
-      ]
-    }));
+    this.setState((prevState, props) => {
+      let hours = prevState.entries[entriesIndex].hours
+      hours[hoursIndex] = value;
+
+      return {
+        entries: [
+          ...prevState.entries.slice(0,entriesIndex),
+          Object.assign({}, prevState.entries[entriesIndex], { hours }),
+          ...prevState.entries.slice(entriesIndex+1)
+        ]
+      }
+    });
   }
 
-  handleHourBlur(e, day, index) {
+  handleHourBlur(e, entriesIndex, hoursIndex) {
+    let days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
     this.setState((prevState) => {
-      const currentTotal = prevState.hours.reduce((a, b) => {
-        console.log('a', a)
-        console.log('b', b)
-        return Number(a) + Number(b[day]);
+      const currentTotal = prevState.entries.reduce((a, b) => {
+        return Number(a) + Number(b.hours[hoursIndex]);
         }, 0);
-      const weekTotal = prevState.hours.reduce((a, b) => {
-        return a + Number(b.sun) + Number(b.mon) + Number(b.tue) + Number(b.wed) + Number(b.thu) + Number(b.fri) + Number(b.sat);
+      const weekTotal = prevState.entries.reduce((a, b) => {
+        return Number(a) + b.hours.reduce((a, b) => {
+          return Number(a) + Number(b)
+        })
       }, 0);
       return {
-        [`${day}Total`]: currentTotal,
+        [`${days[hoursIndex]}Total`]: currentTotal,
         weekTotal: weekTotal
       }
     });

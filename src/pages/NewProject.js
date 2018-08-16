@@ -32,8 +32,17 @@ class NewProject extends Component {
         client: this.state.client,
         code: this.state.code,
         description: this.state.description
-      })
-      this.props.history.push('/projects')
+      }).then(response => {
+        if (response.errors) {
+          if (response.clientError) {
+            //TODO: Handle Errors
+          }
+        } else {
+          this.props.history.push('/projects')
+        }
+      }, (err) => {
+        console.log(err);
+      });
     }
   }
 
@@ -54,9 +63,9 @@ class NewProject extends Component {
         <form>
           <div className="container">
             <input onChange={this.handleChange} type="text" placeholder="Name" id="name" required/>
-            <input onChange={this.handleChange} type="text" placeholder="Start Date" id="startDate" />
+            <input style={{marginBottom: '0'}} onChange={this.handleChange} type="text" placeholder="Start Date" id="startDate" />
             <small>MM/DD/YYYY</small>
-            <input onChange={this.handleChange} type="text" placeholder="End Date" id="endDate" />
+            <input style={{marginBottom: '0'}} onChange={this.handleChange} type="text" placeholder="End Date" id="endDate" />
             <small>MM/DD/YYYY</small>
             <input onChange={this.handleChange} type="text" placeholder="Client" id="client" />
             <input onChange={this.handleChange} type="text" placeholder="Code" id="code" />

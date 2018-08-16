@@ -12,7 +12,7 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    ApiHelper.get('/userProjects')
+    ApiHelper.get('/user_projects')
       .then(response => {
         this.setState({
           projects: response.data
