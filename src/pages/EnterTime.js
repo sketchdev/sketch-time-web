@@ -8,7 +8,7 @@ class EnterTime extends Component {
 
     this.state = {
       projects: [],
-      userProjects: [],
+      userProjects: (this.props.location && this.props.location.state) ? this.props.location.state.userProjects : [],
       id: '',
       userId: 'test',
       year: this.props.match.params.year,
@@ -32,30 +32,51 @@ class EnterTime extends Component {
     this.handleHourBlur = this.handleHourBlur.bind(this);
   }
 
+  //TODO: DRY up
   async componentDidMount() {
-    let projects = await ApiHelper.get('/projects')
-      .then(response => {
-        return response.data;
-      }, (err) => {
-        console.log(err);
-      });
-    let userEntries = await ApiHelper.get(`/entries?user_id=${this.state.userId}&week=${this.state.week}&year=${this.state.year}`)
-      .then(response => {
-        return response.data;
-      }, (err) => {
-        console.log(err);
-      });
-    let userProjects = await ApiHelper.get('/user_projects?user_id=test')
-      .then(response => {
-        return response.data;
-      }, (err) => {
-        console.log(err);
-      });
+    let userProjects = this.state.userProjects;
+    let entryProjects = [];
 
-    let entryProjects = userEntries.map(e => { return e.project_id; })
+    let projects = await ApiHelper.get('/project')
+      .then(response => {
+        return response.data;
+      }, (err) => {
+        console.log(err);
+      });
+    let userEntries = await ApiHelper.get(`/entry?user_id=${this.state.userId}&week=${this.state.week}&year=${this.state.year}`)
+      .then(response => {
+        if (response) {
+          if (response.errors) {
+            console.log(response.errors);
+          } else {
+            return response.data
+          }
+        }
+      }, (err) => {
+        console.log(err);
+      });
+    if (userEntries) {
+      entryProjects = userEntries.map(e => { return e.project_id; })
+    }
+
+    if (!userEntries || userEntries.length === 0) {
+      await ApiHelper.get(`/entry?user_id=${this.state.userId}&${getPreviousWeekAndYear(this.state.week, this.state.year)}`)
+        .then(response => {
+          if (response) {
+            if (response.errors) {
+              console.log(response.errors);
+            } else {
+              let previousEntriesprojects = response.data.map(e => { return e.project_id; })
+              userProjects = userProjects.concat(previousEntriesprojects)
+            }
+          }
+        }, (err) => {
+          console.log(err);
+        });
+    }
 
     let newEntries = [];
-    userProjects[0].projects.forEach(up => {
+    userProjects.forEach(up => {
       if (!entryProjects.includes(up)) {
         let entry = {
           project_id: up,
@@ -65,34 +86,41 @@ class EnterTime extends Component {
       }
     })
 
+    console.log('projects', projects)
     this.setState({
       projects,
-      userProjects: userProjects[0].projects,
-      entries: userEntries.concat(newEntries)
+      entries: userEntries ? newEntries.concat(userEntries) : newEntries,
+      userProjects: []
     })
   }
 
   async componentDidUpdate(prevProps, prevState) {
     const week = this.props.match.params.week;
     const year = this.props.match.params.year;
+
+    let userProjects = [];
     if (prevState.week !== week || prevState.year !== year) {
-      let userEntries = await ApiHelper.get(`/entries?user_id=${this.state.userId}&week=${this.state.week}&year=${this.state.year}`)
+      let userEntries = await ApiHelper.get(`/entry?user_id=${this.state.userId}&week=${this.state.week}&year=${this.state.year}`)
         .then(response => {
           return response.data;
         }, (err) => {
           console.log(err);
         });
-      let userProjects = await ApiHelper.get('/user_projects?user_id=test')
-        .then(response => {
-          return response.data;
-        }, (err) => {
-          console.log(err);
-        });
+
+      if (!userEntries || userEntries.length === 0) {
+        let previousEntries = await ApiHelper.get(`/entry?user_id=${this.state.userId}&${getPreviousWeekAndYear(this.state.week, this.state.year)}`)
+          .then(response => {
+            return response.data;
+          }, (err) => {
+            console.log(err);
+          });
+        userProjects = previousEntries.map(e => { return e.project_id; })
+      }
 
       let entryProjects = userEntries.map(e => { return e.project_id; })
 
       let newEntries = [];
-      userProjects[0].projects.forEach(up => {
+      userProjects.forEach(up => {
         if (!entryProjects.includes(up)) {
           let entry = {
             project_id: up,
@@ -104,17 +132,17 @@ class EnterTime extends Component {
 
       this.setState({
         week, year,
-        userProjects: userProjects[0].projects,
         entries: userEntries.concat(newEntries)
       })
     }
   }
 
+  //TODO: add notification saves was successful and handle errors
   handleSubmit(e) {
     e.preventDefault();
     this.state.entries.forEach(entry => {
       if (entry.id) {
-        ApiHelper.put('/entries/' + entry.id, {
+        ApiHelper.put('/entry/' + entry.id, {
           user_id: this.state.userId,
           week: this.state.week,
           year: this.state.year,
@@ -122,7 +150,7 @@ class EnterTime extends Component {
           project_id: entry.project_id
         })
       } else {
-        ApiHelper.post('/entries', {
+        ApiHelper.post('/entry', {
           user_id: this.state.userId,
           week: this.state.week,
           year: this.state.year,
@@ -189,6 +217,14 @@ class EnterTime extends Component {
         handleHourBlur={this.handleHourBlur}
       />
     );
+  }
+}
+
+function getPreviousWeekAndYear(week, year) {
+  if (week === 1) {
+    return `year=${Number(year)-1}&week=52`;
+  } else {
+    return `year=${year}&week=${Number(week)-1}`;
   }
 }
 

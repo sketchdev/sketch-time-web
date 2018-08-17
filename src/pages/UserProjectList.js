@@ -10,47 +10,26 @@ class UserProjectList extends Component {
 
     this.state = {
       userId: 'test',
-      id: '',
       projects: [],
       userProjects: [],
-      isEditing: ''
+      week: this.props.location.state.week,
+      year: this.props.location.state.year
     };
-
 
     this.addToUserProjects = this.addToUserProjects.bind(this);
     this.removeFromUserProjects = this.removeFromUserProjects.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  async componentDidMount() {
-    let projects = await ApiHelper.get('/projects')
+  componentDidMount() {
+    ApiHelper.get('/project')
       .then(response => {
-        return response.data;
+        this.setState({
+          projects: response.data
+        })
       }, (err) => {
         console.log(err);
       });
-    let userProjects = await ApiHelper.get('/user_projects?user_id=test')
-      .then(response => {
-        console.log(response.data)
-        return response.data;
-      }, (err) => {
-        console.log(err);
-      });
-
-    if (userProjects && userProjects.length > 0) {
-      this.setState({
-        projects,
-        userProjects: userProjects[0].projects,
-        id: userProjects[0].id,
-        isEditing: true
-      })
-    } else {
-      this.setState({
-        projects,
-        userProjects: [],
-        isEditing: false
-      })
-    }
   }
 
   addToUserProjects(e, projectId) {
@@ -72,22 +51,10 @@ class UserProjectList extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    if (this.state.isEditing) {
-      ApiHelper.put('/user_projects/'+this.state.id, {
-        user_id: this.state.userId,
-        projects: this.state.userProjects
-      })
-    } else {
-      ApiHelper.post('/user_projects', {
-        user_id: this.state.userId,
-        projects: this.state.userProjects
-      })
-    }
-    this.props.history.push('/enter-time/2018/33')
+    this.props.history.push(`/enter-time/${this.state.year}/${this.state.week}`, { userProjects: this.state.userProjects })
   }
 
   render() {
-    console.log('state', this.state)
     return (
       <div style={{marginTop: '20px'}}>
         <h1 className={'pull-left'}>My Projects</h1>
@@ -115,7 +82,7 @@ class UserProjectList extends Component {
           })}
           </tbody>
         </StyledTable>
-        <button type="submit" onClick={this.handleSubmit}>Save Changes</button>
+        <button type="submit" onClick={this.handleSubmit}>Add</button>
       </div>
     );
   }

@@ -13,7 +13,7 @@ class ProjectList extends Component {
   }
 
   componentDidMount() {
-    ApiHelper.get('/projects')
+    ApiHelper.get('/project')
       .then(response => {
         this.setState({
           projects: response.data

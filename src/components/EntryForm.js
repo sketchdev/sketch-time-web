@@ -46,7 +46,7 @@ class EntryForm extends Component {
               (this.props.data.entries && this.props.data.entries.length > 0) && this.props.data.entries.map((e, entriesIndex) => {
                 return <tr key={'entry'+entriesIndex}>
                   <td>
-                    {this.props.data.projects.find(p => { return e.project_id === p.id }).name}
+                    {this.props.data.projects && this.props.data.projects.length > 0 ? this.props.data.projects.find(p => { return e.project_id === p.id }).name : ''}
                   </td>
                     { e.hours.map((h, hoursIndex) => {
                       return <td key={'day'+hoursIndex}>
@@ -62,7 +62,7 @@ class EntryForm extends Component {
           </TimeDiv>
 
           <AddRowContainer>
-            <Link to={'/users/projects'}><button className={'btn-small btn-secondary'} onClick={this.props.addProject}>Add Projects</button></Link>
+            <Link to={{pathname: '/users/projects', state: { week: this.props.data.week, year: this.props.data.year }}}><button className={'btn-small btn-secondary'} >Add Projects</button></Link>
             <button onClick={this.props.handleSubmit} className={'btn-small'}>Save</button>
           </AddRowContainer>
         </form>

@@ -25,7 +25,7 @@ class NewProject extends Component {
     e.preventDefault();
     console.log(this.state)
     if (this.validate()) {
-      ApiHelper.post('/projects', {
+      ApiHelper.post('/project', {
         name: this.state.name,
         startDate: this.state.startDate ? moment(this.state.startDate) : '',
         endDate: this.state.endDate ? moment(this.state.endDate) : '',
