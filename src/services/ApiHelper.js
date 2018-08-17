@@ -1,7 +1,4 @@
 import deepEqual from 'deep-equal';
-import sampleResults from '../people.json';
-import sampleProjects from '../projects.json';
-import sampleClients from '../clients.json';
 import AuthHelper from './AuthHelper';
 
 // noinspection JSUnresolvedVariable
@@ -12,42 +9,8 @@ const APP_JSON = 'application/json';
 const stubs = {
   // path can be a string or regexp
   // stub can be an object or function
-  GET: [
-    // Run results, 100 samples, 36 proteins
-    {
-      // path: /\/api\/runs\/\d+\/results/,
-      path: /\/api\/people/,
-      stub: sampleResults,
-    },
-    {
-      // path: /\/api\/runs\/\d+\/results/,
-      path: /\/api\/projects/,
-      stub: sampleProjects,
-    },
-    {
-      // path: /\/api\/runs\/\d+\/results/,
-      path: /\/api\/client/,
-      stub: sampleClients,
-    },
-
-    // No Templates Result
-    // {
-    //   path: '/api/templates?page=0&size=8&sort=name',
-    //   stub: {content: [], first: true, last: true},
-    // },
-
-    // No Recipes Result
-    // {
-    //   path: '/api/recipes?page=0&size=8&sort=kitName',
-    //   stub: {content: [], first: true, last: true},
-    // },
-  ],
-  GET_FILE: [
-    // {
-    //   path: /\/api\/runs\/(?!10|124)\d+\/results\.csv/,
-    //   stub: sampleResultsCsv
-    // }
-  ],
+  GET: [],
+  GET_FILE: [],
   POST: [],
   PATCH: [],
   PUT: [] ,
