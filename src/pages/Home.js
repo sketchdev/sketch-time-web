@@ -1,57 +1,62 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import ApiHelper from '../services/ApiHelper';
+import FormHelper from '../services/FormHelper';
+import AuthHelper from '../services/AuthHelper';
+import { Redirect } from 'react-router';
 
 class Home extends Component {
   constructor(props) {
     super(props);
-
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = {
+      email: '',
+      password: '',
+      errors: {},
+    };
+    
+    this.handleChange = FormHelper.handleChanger(this);
   }
 
-  handleSubmit(e) {
+  handleSubmit = async (e) => {
     e.preventDefault();
-    this.props.history.push('/dashboard');
-  }
+    const res = await ApiHelper.post('/user/login', {email: this.state.email, password: this.state.password});
+    if (res.errors) {
+      //TODO can wrestler make it easier to deal with error messages
+      this.setState({
+        error: (res.errors.base || {}).messages[0] || 'something went wrong'
+      });
+    } else {
+      AuthHelper.storeToken(res.data.token);
+      this.props.history.push('/dashboard');
+    }
+  };
 
   render() {
+    if (AuthHelper.isLoggedIn()) {
+      return <Redirect to={'/dashboard'} />;
+    }
+    
     return (
-      <Main>
-        <Header>
-          <img height={'60px'} width={'60px'} className={'pull-left'} src={require('../images/clock.png')} alt={'SketchTime'}/>
-          <Title>SketchTime</Title>
-        </Header>
+      <div>
         <Body>
           <form onSubmit={this.handleSubmit}>
             <Login>
               Log In
             </Login>
-            <input id={'email'} type={'text'} placeholder={'Email Address'}/>
-            <input id={'password'} type={'password'} placeholder={'Password'}/>
+            {this.state.error && <p className={'error'}>{this.state.error}</p>}
+            <input id={'email'} onChange={this.handleChange} type={'text'} placeholder={'Email Address'} value={this.state.email}/>
+            <input id={'password'} onChange={this.handleChange} type={'password'} placeholder={'Password'} value={this.state.password}/>
             <button>Log In</button>
           </form>
         </Body>
-      </Main>
+        <div>
+          <p>Don't have an account? <Link to={'/register'}>Sign Up</Link></p>
+        </div>
+      </div>
     );
   }
 }
-
-const Main = styled.div`
-  text-align: center;
-  padding: 0;
-  margin: 0;
-  height: 100%;
-`;
-
-const Header = styled.div`
-  font-size: 20px;
-  margin: 35px auto;
-  width: 275px;
-`;
-
-const Title = styled.h1`
-  padding-top: 5px;
-  
-`;
 
 const Body = styled.div`
   margin: 0 auto;
@@ -67,5 +72,5 @@ const Login = styled.div`
   font-weight: 300;
   margin: 0 auto 45px;
   font-size: 35px;
-`
+`;
 export default Home;

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router';
+import { Switch } from 'react-router';
 import Home from '../src/pages/Home';
 import Dashboard from '../src/pages/Dashboard';
 import UserList from './pages/UserList'
@@ -12,21 +12,24 @@ import NewClient from './pages/NewClient';
 import ClientList from './pages/ClientList'
 import EnterTime from './pages/EnterTime'
 import UserProjectList from './pages/UserProjectList'
+import Register from './pages/Register';
+import LoginLayout from './layouts/LoginLayout';
 
 class App extends Component {
   render() {
     return (
       <Switch>
-        <AppRoute path='/dashboard' layout={MemberLayout} component={Dashboard}/>
-        <AppRoute path='/users/projects' layout={MemberLayout} component={UserProjectList}/>
-        <AppRoute path='/users/new' layout={MemberLayout} component={NewUser}/>
-        <AppRoute path='/users' layout={MemberLayout} component={UserList}/>
-        <AppRoute path='/projects/new' layout={MemberLayout} component={NewProject}/>
-        <AppRoute path='/projects' layout={MemberLayout} component={ProjectList}/>
-        <AppRoute path='/clients/new' layout={MemberLayout} component={NewClient}/>
-        <AppRoute path='/clients' layout={MemberLayout} component={ClientList}/>
-        <AppRoute path='/enter-time/:year/:week' layout={MemberLayout} component={EnterTime}/>
-        <Route path={'/'} component={Home}/>
+        <AppRoute path='/dashboard' layout={MemberLayout} component={Dashboard} requiresAuth />
+        <AppRoute path='/users/projects' layout={MemberLayout} component={UserProjectList} requiresAuth/>
+        <AppRoute path='/users/new' layout={MemberLayout} component={NewUser} requiresAuth/>
+        <AppRoute path='/users' layout={MemberLayout} component={UserList} requiresAuth/>
+        <AppRoute path='/projects/new' layout={MemberLayout} component={NewProject} requiresAuth/>
+        <AppRoute path='/projects' layout={MemberLayout} component={ProjectList} requiresAuth/>
+        <AppRoute path='/clients/new' layout={MemberLayout} component={NewClient} requiresAuth/>
+        <AppRoute path='/clients' layout={MemberLayout} component={ClientList} requiresAuth/>
+        <AppRoute path='/enter-time/:year/:week' layout={MemberLayout} component={EnterTime} requiresAuth/>
+        <AppRoute path='/register' layout={LoginLayout} component={Register}/>
+        <AppRoute path={'/'} layout={LoginLayout} component={Home}/>
       </Switch>
     );
   }

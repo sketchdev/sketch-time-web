@@ -1,13 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Route } from 'react-router';
+import { Redirect, Route } from 'react-router';
+import AuthHelper from '../services/AuthHelper';
 
-const AppRoute = ({ component: Component, layout: Layout,  ...rest }) => (
-  <Route {...rest} render={props => (
-    <Layout>
-      <Component {...props} />
-    </Layout>
-  )} />
+const AppRoute = ({ component: Component, layout: Layout, requiresAuth, ...rest }) => (
+  <Route {...rest} render={props => {
+    if (!requiresAuth || AuthHelper.isLoggedIn()) {
+      return (
+        <Layout>
+          <Component {...props} />
+        </Layout>
+      );
+    } else {
+      return <Redirect to={'/'} />
+    }
+  }} />
 );
 
 AppRoute.propTypes = {

@@ -13,7 +13,7 @@ class UserList extends Component {
   }
 
   componentDidMount() {
-    ApiHelper.get('/users')
+    ApiHelper.get('/user')
       .then(response => {
         this.setState({
           people: response.data

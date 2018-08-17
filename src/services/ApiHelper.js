@@ -2,6 +2,7 @@ import deepEqual from 'deep-equal';
 import sampleResults from '../people.json';
 import sampleProjects from '../projects.json';
 import sampleClients from '../clients.json';
+import AuthHelper from './AuthHelper';
 
 // noinspection JSUnresolvedVariable
 const apiRoot = process.env.REACT_APP_WORKFLOW_API_ROOT || 'http://localhost:3001';
@@ -136,6 +137,7 @@ function buildHeaders(accessToken, contentType=APP_JSON, additionalHeaders={}) {
   if (contentType) {
     headers['Content-Type'] = contentType;
   }
+  accessToken = accessToken || AuthHelper.getToken();
   if (accessToken) {
     headers.Authorization = `Bearer ${accessToken}`;
   }

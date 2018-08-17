@@ -1,9 +1,22 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import AuthHelper from '../services/AuthHelper';
+import { Redirect } from 'react-router';
 
 class Sidebar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loggedOut: false
+    }
+  }
+
   render() {
+    if (this.state.loggedOut) {
+      return <Redirect to={'/'} />;
+    }
+    
     return (
       <SideNav>
         <div className={'header'}>
@@ -15,8 +28,17 @@ class Sidebar extends Component {
         <NavLink to={'/projects'}>Projects</NavLink>
         <NavLink to={'/clients'}>Clients</NavLink>
         <NavLink to={'/settings'}>Settings</NavLink>
+        <div className={'user-section'}>
+          <p>{AuthHelper.getUser().email}</p>
+          <button onClick={this.logout}>Logout</button>
+        </div>
       </SideNav>
     );
+  }
+  
+  logout = () => {
+    AuthHelper.logout();
+    this.setState({loggedOut: true});
   }
 }
 
@@ -56,6 +78,27 @@ const SideNav = styled.div`
     
     & .title {
       padding-top: 2px;
+    }
+    
+    & .user-section {
+      margin: 10px;
+      border-top: 2px solid whitesmoke;
+      text-align: center;
+      
+      & p {
+        font-size: .70em;
+        color: whitesmoke;
+      }
+      
+      & button {
+        color: whitesmoke;
+        border: 1px solid whitesmoke;
+        padding: .5em;
+        width: auto;
+        font-size: 1em;
+        display: inline-block;
+        margin-bottom: 10px;
+      }
     }
 `;
 
