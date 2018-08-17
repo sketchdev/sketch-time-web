@@ -13,7 +13,7 @@ class ClientList extends Component {
   }
 
   componentDidMount() {
-    ApiHelper.get('/client')
+    ApiHelper.get('/client?sort=name')
       .then(response => {
         this.setState({
           clients: response.data
