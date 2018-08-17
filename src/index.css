@@ -88,3 +88,12 @@ input {
 .error {
   color: var(--red);
 }
+
+.success {
+  color: limegreen;
+}
+
+.has-error {
+  color: var(--red);
+  border:  1px solid var(--red) !important;
+}
