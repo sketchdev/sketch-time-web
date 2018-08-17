@@ -29,7 +29,7 @@ class Sidebar extends Component {
         <NavLink to={'/clients'}>Clients</NavLink>
         <NavLink to={'/settings'}>Settings</NavLink>
         <div className={'user-section'}>
-          <p>{AuthHelper.getUser().email}</p>
+          <p>{AuthHelper.currentUser().email}</p>
           <button onClick={this.logout}>Logout</button>
         </div>
       </SideNav>
@@ -37,7 +37,7 @@ class Sidebar extends Component {
   }
   
   logout = () => {
-    AuthHelper.logout();
+    AuthHelper.clearSession();
     this.setState({loggedOut: true});
   }
 }

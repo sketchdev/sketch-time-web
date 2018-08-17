@@ -137,7 +137,7 @@ function buildHeaders(accessToken, contentType=APP_JSON, additionalHeaders={}) {
   if (contentType) {
     headers['Content-Type'] = contentType;
   }
-  accessToken = accessToken || AuthHelper.getToken();
+  accessToken = accessToken || AuthHelper.currentToken();
   if (accessToken) {
     headers.Authorization = `Bearer ${accessToken}`;
   }

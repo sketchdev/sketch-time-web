@@ -5,13 +5,14 @@ import AuthHelper from '../services/AuthHelper';
 
 const AppRoute = ({ component: Component, layout: Layout, requiresAuth, ...rest }) => (
   <Route {...rest} render={props => {
-    if (!requiresAuth || AuthHelper.isLoggedIn()) {
+    if (!requiresAuth || AuthHelper.isSessionValidForMinutes(2)) {
       return (
         <Layout>
           <Component {...props} />
         </Layout>
       );
     } else {
+      AuthHelper.clearSession();
       return <Redirect to={'/'} />
     }
   }} />

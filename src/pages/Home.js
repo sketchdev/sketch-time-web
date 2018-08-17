@@ -33,7 +33,7 @@ class Home extends Component {
   };
 
   render() {
-    if (AuthHelper.isLoggedIn()) {
+    if (AuthHelper.currentUser()) {
       return <Redirect to={'/dashboard'} />;
     }
     
