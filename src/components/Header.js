@@ -10,10 +10,10 @@ class Header extends Component {
     const user = AuthHelper.currentUser();
     return (
       <StyledDiv>
-        <StyledImage src={`https://www.gravatar.com/avatar/${user.gravatarHash}?s=48`} />
+        <StyledImage src={`https://www.gravatar.com/avatar/${user.gravatarHash}?s=46`} />
         <div className={'inline-block mr1'}>{user.email}</div>
         <ButtonGroup>
-          <Button color={'lightgray'} onClick={this.logout}>Logout</Button>
+          <Button color={'white'} onClick={this.logout}>Logout</Button>
         </ButtonGroup>
       </StyledDiv>
     );
@@ -30,14 +30,14 @@ Header.propTypes = {};
 
 const StyledDiv = styled.div`
     padding-left: 220px;
-    padding-right: var(--space-2);
+    padding-right: var(--space-1);
     padding-top: var(--space-1);
     padding-bottom: var(--space-1);
-    border-bottom: 3px solid whitesmoke;
+    background-color: var(--lightgray);
 `;
 
 const StyledImage = styled.img`
-  border-radius: 10px;
+  border-radius: 23px;
   vertical-align: middle;
   margin-right: var(--space-1);
 `;

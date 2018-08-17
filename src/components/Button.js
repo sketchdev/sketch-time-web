@@ -4,6 +4,7 @@ import { withRouter } from 'react-router';
 import styled from 'styled-components';
 
 const colors = {
+  'white': { fg: 'black', bg: 'white' },
   'lightgray': { fg: 'black', bg: 'var(--lightgray)' },
   'darkblue': { fg: 'white', bg: 'var(--darkblue)' },
   'orange': { fg: 'white', bg: 'var(--orange)' },
@@ -35,7 +36,7 @@ class Button extends Component {
 Button.propTypes = {
   to: PropTypes.string,
   onClick: PropTypes.func,
-  color: PropTypes.oneOf(['lightgray', 'orange', 'darkblue']),
+  color: PropTypes.oneOf(['white', 'lightgray', 'orange', 'darkblue']),
   block: PropTypes.bool,
 };
 
