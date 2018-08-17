@@ -10,7 +10,7 @@ class Header extends Component {
     const user = AuthHelper.currentUser();
     return (
       <StyledDiv>
-        <StyledImage src={`https://www.gravatar.com/avatar/${user.gravatarHash}?s=46`} />
+        <StyledImage src={`https://www.gravatar.com/avatar/${user.gravatarHash}?s=46&d=retro`} />
         <div className={'inline-block mr1'}>{user.email}</div>
         <ButtonGroup>
           <Button color={'white'} onClick={this.logout}>Logout</Button>
