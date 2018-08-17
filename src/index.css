@@ -6,6 +6,11 @@
   --tan:#F3FFE2;
   --orange:#EB7F00;
   --red: tomato;
+  --lightgray: whitesmoke;
+  --space-1: 10px;
+  --space-2: 20px;
+  --space-3: 30px;
+  --space-4: 40px;
 }
 
 html {

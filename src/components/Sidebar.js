@@ -1,22 +1,9 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import AuthHelper from '../services/AuthHelper';
-import { Redirect } from 'react-router';
 
 class Sidebar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loggedOut: false
-    }
-  }
-
   render() {
-    if (this.state.loggedOut) {
-      return <Redirect to={'/'} />;
-    }
-    
     return (
       <SideNav>
         <div className={'header'}>
@@ -28,18 +15,11 @@ class Sidebar extends Component {
         <NavLink to={'/projects'}>Projects</NavLink>
         <NavLink to={'/clients'}>Clients</NavLink>
         <NavLink to={'/settings'}>Settings</NavLink>
-        <div className={'user-section'}>
-          <p>{AuthHelper.currentUser().email}</p>
-          <button onClick={this.logout}>Logout</button>
-        </div>
+        <NavLink to={`/profile`}>Profile</NavLink>
       </SideNav>
     );
   }
   
-  logout = () => {
-    AuthHelper.clearSession();
-    this.setState({loggedOut: true});
-  }
 }
 
 const SideNav = styled.div`
@@ -66,6 +46,9 @@ const SideNav = styled.div`
       &:hover {
         color: var(--lightblue);
       }
+      &.active {
+        color: var(--lightblue);
+      }
     }
     
     & .header {
@@ -73,7 +56,7 @@ const SideNav = styled.div`
       margin: 10px;
       font-size: 25px;
       color: whitesmoke;
-      border-bottom: 2px solid whitesmoke;
+      border-bottom: 1px solid whitesmoke;
     }
     
     & .title {
@@ -82,22 +65,19 @@ const SideNav = styled.div`
     
     & .user-section {
       margin: 10px;
-      border-top: 2px solid whitesmoke;
+      padding-bottom: var(--space-2);
+      padding-top: var(--space-1);
+      border-bottom: 2px solid whitesmoke;
       text-align: center;
       
       & p {
-        font-size: .70em;
+        margin-top: 0;
+        font-size: .75em;
         color: whitesmoke;
       }
       
       & button {
-        color: whitesmoke;
-        border: 1px solid whitesmoke;
-        padding: .5em;
-        width: auto;
-        font-size: 1em;
-        display: inline-block;
-        margin-bottom: 10px;
+        font-size: .75em;
       }
     }
 `;

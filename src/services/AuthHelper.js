@@ -1,4 +1,5 @@
 import moment from 'moment';
+import md5 from 'md5';
 
 const keys = { token: 'token', tokenExp: 'tokenExp', user: 'user'};
 
@@ -7,7 +8,7 @@ export default {
   
   storeToken: (token) => {
     const {exp, user} = parseToken(token);
-    console.log(exp, user);
+    user.gravatarHash = md5(user.email.trim().toLowerCase());
     localStorage.setItem(keys.token, token);
     localStorage.setItem(keys.user, JSON.stringify(user));
     localStorage.setItem(keys.tokenExp, exp);

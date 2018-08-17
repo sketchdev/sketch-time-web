@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import FormHelper from '../services/FormHelper';
 import ApiHelper from '../services/ApiHelper';
 import AuthHelper from '../services/AuthHelper';
+import Button from '../components/Button';
 
 class Register extends Component {
   
@@ -61,13 +62,13 @@ class Register extends Component {
     return (
       <Body>
         <Header>Sign Up</Header>
-        <form>
+        <form onSubmit={this.handleSubmit}>
           <div className="container">
             <input onChange={this.handleChange} type="text" placeholder="First Name" name="firstName" id="firstName" required/>
             <input onChange={this.handleChange} type="text" placeholder="Last Name" name="lastName" id="lastName" required/>
             <input onChange={this.handleChange} type="text" placeholder="Email" name="email" id="email" required/>
             <input onChange={this.handleChange} type="password" placeholder="Password" name="password" id="password" required/>
-            <button type="submit" onClick={this.handleSubmit}>Submit</button>
+            <Button block type="submit">Submit</Button>
           </div>
         </form>
       </Body>
