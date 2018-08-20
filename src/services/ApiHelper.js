@@ -120,14 +120,14 @@ function handlePromise(promise, jsonResponse=true) {
         .then(toJsonIfPresent)
         .then(errors => {
           if (errors && typeof errors === 'string') {
-            errors = { base: errors };
+            errors = { base: {messages: [errors]}};
           }
-          errors = errors || { base: 'Invalid request' };
+          errors = errors || { base: {messages: ['Invalid request']}};
           return { statusCode: resp.status, errors, data: null, clientError: true };
         });
     } else {
       resp.text().then(t => console.error('raw error body', t));
-      const errors = { base: 'Request failed' };
+      const errors = { base: {messages: ['Request failed']}};
       return { statusCode: resp.status, errors, data: null, clientError: false };
     }
   });

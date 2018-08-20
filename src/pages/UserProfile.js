@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import AuthHelper from '../services/AuthHelper';
-import styled from 'styled-components';
 import ApiHelper from '../services/ApiHelper';
 import Error from '../components/Error';
 import Loading from '../components/Loading';
@@ -46,7 +45,7 @@ class UserProfile extends Component {
     return (
       <div>
         <h1>Profile</h1>
-        <StyledDiv>
+        <div>
           <div>
             <ProfilePic className={'mr3'} size={'large'} email={this.state.user.email}/>
             <div className={'inline-block ml2 align-middle'}>
@@ -55,10 +54,10 @@ class UserProfile extends Component {
             </div>
           </div>
           <div className={'mt3'}>
-            <Button color={'lightgray'} className={'mr1'}>Edit Profile</Button>
+            <Button color={'lightgray'} className={'mr1'} to={'/profile/edit'}>Edit Profile</Button>
             <Button color={'lightgray'}>Change Password</Button>
           </div>
-        </StyledDiv>
+        </div>
       </div>
     );
   }
@@ -66,10 +65,5 @@ class UserProfile extends Component {
 }
 
 UserProfile.propTypes = {};
-
-const StyledDiv = styled.div`
-  border: 1px solid var(--lightgray);
-  padding: var(--space-2);
-`;
 
 export default UserProfile;
