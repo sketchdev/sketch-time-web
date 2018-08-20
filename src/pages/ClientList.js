@@ -31,6 +31,8 @@ class ClientList extends Component {
           <Link to={'/clients/new'}><button className={'btn-small pull-right'}>New Client</button></Link>
         </div>
         <Table
+          type={'client'}
+          listPage={'/clients'}
           headers={[
             {title: 'Name', field: 'name'},
             {title: 'Address', field: 'address'},
@@ -39,6 +41,8 @@ class ClientList extends Component {
             {title: 'Zip', field: 'zip'},
           ]}
           list={this.state.clients}
+          edit={'/clients/edit/'}
+          delete={'/clients/delete/'}
         />
       </div>
     );

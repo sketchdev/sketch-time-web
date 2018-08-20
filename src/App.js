@@ -15,6 +15,7 @@ import UserProjectList from './pages/UserProjectList'
 import Register from './pages/Register';
 import LoginLayout from './layouts/LoginLayout';
 import UserProfile from './pages/UserProfile';
+import DeletePage from './pages/DeletePage'
 
 class App extends Component {
   render() {
@@ -27,7 +28,9 @@ class App extends Component {
         <AppRoute path='/profile' layout={MemberLayout} component={UserProfile} requiresAuth/>
         <AppRoute path='/projects/new' layout={MemberLayout} component={NewProject} requiresAuth/>
         <AppRoute path='/projects' layout={MemberLayout} component={ProjectList} requiresAuth/>
-        <AppRoute path='/clients/new' layout={MemberLayout} component={NewClient} requiresAuth/>
+        <AppRoute exact path='/clients/new' layout={MemberLayout} component={NewClient} requiresAuth/>
+        <AppRoute exact path='/clients/delete' layout={MemberLayout} component={DeletePage} requiresAuth/>
+        <AppRoute path='/clients/edit/:id' layout={MemberLayout} component={NewClient} requiresAuth/>
         <AppRoute path='/clients' layout={MemberLayout} component={ClientList} requiresAuth/>
         <AppRoute path='/enter-time/:year/:week' layout={MemberLayout} component={EnterTime} requiresAuth/>
         <AppRoute path='/register' layout={LoginLayout} component={Register}/>
