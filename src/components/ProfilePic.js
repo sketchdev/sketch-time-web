@@ -20,7 +20,7 @@ class ProfilePic extends PureComponent {
 }
 
 ProfilePic.propTypes = {
-  size: PropTypes.oneOf('small', 'large'),
+  size: PropTypes.oneOf(['small', 'large']),
   email: PropTypes.string.isRequired,
 };
 
