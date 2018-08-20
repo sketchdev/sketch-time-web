@@ -25,6 +25,7 @@ class Register extends Component {
     e.preventDefault();
     console.log(this.state);
     if (this.validate()) {
+      // TODO: error handling for this POST
       await ApiHelper.post('/user', {
         firstName: this.state.firstName,
         lastName: this.state.lastName,

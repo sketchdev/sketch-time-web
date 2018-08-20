@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import AuthHelper from '../services/AuthHelper';
 import Button from './Button';
 import { withRouter } from 'react-router';
+import ProfilePic from './ProfilePic';
 
 class Header extends Component {
 
@@ -10,8 +11,8 @@ class Header extends Component {
     const user = AuthHelper.currentUser();
     return (
       <StyledDiv>
-        <StyledImage src={`https://www.gravatar.com/avatar/${user.gravatarHash}?s=46&d=retro`} />
-        <div className={'inline-block mr1'}>{user.email}</div>
+        <ProfilePic email={user.email}/>
+        <div className={'inline-block mr1 align-middle'}>{user.email}</div>
         <ButtonGroup>
           <Button color={'white'} onClick={this.logout}>Logout</Button>
         </ButtonGroup>
@@ -34,12 +35,6 @@ const StyledDiv = styled.div`
     padding-top: var(--space-1);
     padding-bottom: var(--space-1);
     background-color: var(--lightgray);
-`;
-
-const StyledImage = styled.img`
-  border-radius: 23px;
-  vertical-align: middle;
-  margin-right: var(--space-1);
 `;
 
 const ButtonGroup = styled.div`

@@ -24,7 +24,7 @@ class App extends Component {
         <AppRoute path='/users/projects' layout={MemberLayout} component={UserProjectList} requiresAuth/>
         <AppRoute path='/users/new' layout={MemberLayout} component={NewUser} requiresAuth/>
         <AppRoute path='/users' exact layout={MemberLayout} component={UserList} requiresAuth/>
-        <AppRoute path='/profile' layout={MemberLayout} component={UserProfile}/>
+        <AppRoute path='/profile' layout={MemberLayout} component={UserProfile} requiresAuth/>
         <AppRoute path='/projects/new' layout={MemberLayout} component={NewProject} requiresAuth/>
         <AppRoute path='/projects' layout={MemberLayout} component={ProjectList} requiresAuth/>
         <AppRoute path='/clients/new' layout={MemberLayout} component={NewClient} requiresAuth/>
