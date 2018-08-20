@@ -5,6 +5,7 @@ import ApiHelper from '../services/ApiHelper';
 import FormHelper from '../services/FormHelper';
 import AuthHelper from '../services/AuthHelper';
 import { Redirect } from 'react-router';
+import PropTypes from 'prop-types';
 
 class Home extends Component {
   constructor(props) {
@@ -27,13 +28,14 @@ class Home extends Component {
         error: (res.errors.base || {}).messages[0] || 'something went wrong'
       });
     } else {
-      AuthHelper.storeToken(res.data.token);
+      const user = AuthHelper.storeToken(res.data.token);
+      this.props.setUser(user);
       this.props.history.push('/dashboard');
     }
   };
 
   render() {
-    if (AuthHelper.currentUser()) {
+    if (this.props.user) {
       return <Redirect to={'/dashboard'} />;
     }
     
@@ -57,6 +59,11 @@ class Home extends Component {
     );
   }
 }
+
+Home.propTypes = {
+  setUser: PropTypes.func.isRequired,
+  user: PropTypes.object,
+};
 
 const Body = styled.div`
   margin: 0 auto;

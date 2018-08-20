@@ -1,56 +1,20 @@
 import React, { Component } from 'react';
-import AuthHelper from '../services/AuthHelper';
-import ApiHelper from '../services/ApiHelper';
-import Error from '../components/Error';
-import Loading from '../components/Loading';
 import ProfilePic from '../components/ProfilePic';
 import Button from '../components/Button';
+import PropTypes from 'prop-types';
 
 class UserProfile extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-      user: null,
-      error: null
-    }
-  }
-  
-  async componentDidMount() {
-    const id = AuthHelper.currentUser().id;
-    const res = await ApiHelper.get(`/user/${id}`);
-    if (res.errors) {
-      this.setState({
-        loading: false,
-        error: 'unable to lookup the profile data'
-      })
-    } else {
-      this.setState({
-        loading: false,
-        error: false,
-        user: res.data
-      })
-    }
-  }
 
   render() {
-    if (this.state.loading) {
-      return <Loading/>;
-    }
-    
-    if (this.state.error) {
-      return <Error detail={this.state.error}/>
-    }
-    
     return (
       <div>
         <h1>Profile</h1>
         <div>
           <div>
-            <ProfilePic className={'mr3'} size={'large'} email={this.state.user.email}/>
+            <ProfilePic className={'mr3'} size={'large'} email={this.props.user.email}/>
             <div className={'inline-block ml2 align-middle'}>
-              <h2 className={'m0 mb1 p0'}>{this.state.user.firstName} {this.state.user.lastName}</h2>
-              <p className={'m0 p0'}>{this.state.user.email}</p>
+              <h2 className={'m0 mb1 p0'}>{this.props.user.firstName} {this.props.user.lastName}</h2>
+              <p className={'m0 p0'}>{this.props.user.email}</p>
             </div>
           </div>
           <div className={'mt3'}>
@@ -64,6 +28,8 @@ class UserProfile extends Component {
 
 }
 
-UserProfile.propTypes = {};
+UserProfile.propTypes = {
+  user: PropTypes.object,
+};
 
 export default UserProfile;

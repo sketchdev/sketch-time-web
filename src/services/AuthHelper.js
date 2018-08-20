@@ -10,10 +10,14 @@ export default {
     localStorage.setItem(keys.token, token);
     localStorage.setItem(keys.user, JSON.stringify(user));
     localStorage.setItem(keys.tokenExp, exp);
+    return user;
   },
   clearSession,
   currentToken,
   currentUser,
+  updateUser: (user) => {
+    localStorage.setItem(keys.user, JSON.stringify(user));
+  }
 }
 
 function parseToken(token) {
@@ -44,7 +48,7 @@ function currentUser() {
   try {
     return userJson ? JSON.parse(userJson) : null;
   } catch (err) {
-    console.err(err);
+    console.error(err);
     clearSession();
   }
 }

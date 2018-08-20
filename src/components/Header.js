@@ -1,33 +1,30 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import AuthHelper from '../services/AuthHelper';
 import Button from './Button';
 import { withRouter } from 'react-router';
 import ProfilePic from './ProfilePic';
+import PropTypes from 'prop-types';
 
 class Header extends Component {
 
   render() {
-    const user = AuthHelper.currentUser();
     return (
       <StyledDiv>
-        <ProfilePic email={user.email}/>
-        <div className={'inline-block mr1 align-middle'}>{user.email}</div>
+        <ProfilePic email={this.props.user.email}/>
+        <div className={'inline-block mr1 align-middle'}>{this.props.user.email}</div>
         <ButtonGroup>
-          <Button color={'white'} onClick={this.logout}>Logout</Button>
+          <Button color={'white'} onClick={this.props.onLogout}>Logout</Button>
         </ButtonGroup>
       </StyledDiv>
     );
   }
   
-  logout = () => {
-    AuthHelper.clearSession();
-    this.props.history.push('/');
-  }
-
 }
 
-Header.propTypes = {};
+Header.propTypes = {
+  user: PropTypes.object.isRequired,
+  onLogout: PropTypes.func.isRequired,
+};
 
 const StyledDiv = styled.div`
     padding-left: 220px;
