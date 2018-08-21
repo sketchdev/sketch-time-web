@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { Switch } from 'react-router';
+import { Route, Switch } from 'react-router';
 import Home from '../src/pages/Home';
 import Dashboard from '../src/pages/Dashboard';
 import UserList from './pages/UserList'
-import MemberLayout from './layouts/MemberLayout'
-import AppRoute from '../src/components/AppRoute';
 import ProjectList from './pages/ProjectList'
 import NewUser from './pages/NewUser';
 import NewProject from './pages/NewProject';
@@ -27,7 +25,9 @@ class App extends Component {
     this.state = {
       userContext: {
         user: AuthHelper.currentUser(),
-        setUser: this.setUser
+        updateUser: this.updateUser,
+        clearSession: this.clearSession,
+        createSession: this.createSession,
       }
     };
   }
@@ -36,36 +36,49 @@ class App extends Component {
     return (
       <UserContext.Provider value={this.state.userContext}>
         <Switch>
-          <AppRoute path='/dashboard' layout={MemberLayout} component={Dashboard} requiresAuth />
-          <AppRoute path='/users/projects' layout={MemberLayout} component={UserProjectList} requiresAuth/>
-          <AppRoute path='/users/new' layout={MemberLayout} component={NewUser} requiresAuth/>
-          <AppRoute path='/users' exact layout={MemberLayout} component={UserList} requiresAuth/>
-          <AppRoute path='/profile' exact layout={MemberLayout} component={UserProfile} requiresAuth/>
-          <AppRoute path='/profile/edit' exact layout={MemberLayout} component={UserProfileEdit} requiresAuth/>
-          <AppRoute path='/projects/new' layout={MemberLayout} component={NewProject} requiresAuth/>
-          <AppRoute path='/projects' layout={MemberLayout} component={ProjectList} requiresAuth/>
-          <AppRoute exact path='/clients/new' layout={MemberLayout} component={NewClient} requiresAuth/>
-          <AppRoute exact path='/clients/delete' layout={MemberLayout} component={DeletePage} requiresAuth/>
-          <AppRoute path='/clients/edit/:id' layout={MemberLayout} component={NewClient} requiresAuth/>
-          <AppRoute path='/clients' layout={MemberLayout} component={ClientList} requiresAuth/>
-          <AppRoute path='/enter-time/:year/:week' layout={MemberLayout} component={EnterTime} requiresAuth/>
-          <AppRoute path='/register' layout={LoginLayout} component={Register}/>
-          <AppRoute path={'/'} layout={LoginLayout} component={Home}/>
+          <Route path='/dashboard' render={(props) => this.withProps(props, Dashboard) } />
+          <Route path='/users/projects' render={(props) => this.withProps(props, UserProjectList) }/>
+          <Route path='/users/new' render={(props) => this.withProps(props, NewUser) }/>
+          <Route path='/users' exact render={(props) => this.withProps(props, UserList) }/>
+          <Route path='/profile' exact render={(props) => this.withProps(props, UserProfile) }/>
+          <Route path='/profile/edit' exact render={(props) => this.withProps(props, UserProfileEdit) }/>
+          <Route path='/projects/new' render={(props) => this.withProps(props, NewProject) }/>
+          <Route path='/projects' render={(props) => this.withProps(props, ProjectList) }/>
+          <Route exact path='/clients/new' render={(props) => this.withProps(props, NewClient) }/>
+          <Route exact path='/clients/delete' render={(props) => this.withProps(props, DeletePage) }/>
+          <Route path='/clients/edit/:id' render={(props) => this.withProps(props, NewClient) }/>
+          <Route path='/clients' render={(props) => this.withProps(props, ClientList) }/>
+          <Route path='/enter-time/:year/:week' render={(props) => this.withProps(props, EnterTime) }/>
+          <Route path='/register' layout={LoginLayout} render={(props) => this.withProps(props, Register) }/>
+          <Route path={'/'} layout={LoginLayout} render={(props) => this.withProps(props, Home) }/>
         </Switch>
       </UserContext.Provider>
     );
   }
   
-  setUser = (user) => {
-    if (!user) {
-      AuthHelper.clearSession();
-    } else {
-      AuthHelper.updateUser(user);
-    }
+  withProps = (props, Component) => {
+    return <Component userContext={this.state.userContext} {...props} />
+  };
+  
+  updateUser = (user) => {
     this.setState(prevState => ({
       userContext: {...prevState.userContext, user: user}
     }));
-  }
+  };
+  
+  clearSession = () => {
+    AuthHelper.clearSession();
+    this.setState(prevState => ({
+      userContext: {...prevState.userContext, user: null}
+    }));
+  };
+  
+  createSession = (token) => {
+    const user = AuthHelper.storeToken(token);
+    this.setState(prevState => ({
+      userContext: {...prevState.userContext, user}
+    }));
+  };
 }
 
 export default App;

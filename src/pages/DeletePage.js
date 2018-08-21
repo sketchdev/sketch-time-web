@@ -1,3 +1,5 @@
+import appRoute from '../components/AppRoute';
+import MemberLayout from '../layouts/MemberLayout';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Button from '../components/Button';
@@ -65,4 +67,4 @@ const ButtonGroup = styled.div`
   }
 `;
 
-export default DeletePage;
+export default appRoute(MemberLayout, true)(DeletePage);

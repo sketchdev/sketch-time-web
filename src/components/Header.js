@@ -3,28 +3,28 @@ import styled from 'styled-components';
 import Button from './Button';
 import { withRouter } from 'react-router';
 import ProfilePic from './ProfilePic';
-import PropTypes from 'prop-types';
 
 class Header extends Component {
 
   render() {
+    const user = this.props.userContext.user;
     return (
       <StyledDiv>
-        <ProfilePic email={this.props.user.email}/>
-        <div className={'inline-block mr1 align-middle'}>{this.props.user.email}</div>
+        <ProfilePic email={user.email}/>
+        <div className={'inline-block mr1 align-middle'}>{user.email}</div>
         <ButtonGroup>
-          <Button color={'white'} onClick={this.props.onLogout}>Logout</Button>
+          <Button color={'white'} onClick={this.logout}>Logout</Button>
         </ButtonGroup>
       </StyledDiv>
     );
   }
   
+  logout = () => {
+    this.props.userContext.clearSession();
+    this.props.history.push('/');
+  };
+  
 }
-
-Header.propTypes = {
-  user: PropTypes.object.isRequired,
-  onLogout: PropTypes.func.isRequired,
-};
 
 const StyledDiv = styled.div`
     padding-left: 220px;

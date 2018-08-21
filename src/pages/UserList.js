@@ -1,3 +1,5 @@
+import appRoute from '../components/AppRoute';
+import MemberLayout from '../layouts/MemberLayout';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ApiHelper from '../services/ApiHelper'
@@ -43,4 +45,4 @@ class UserList extends Component {
   }
 }
 
-export default UserList;
+export default appRoute(MemberLayout, true)(UserList);

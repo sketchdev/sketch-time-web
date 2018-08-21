@@ -1,3 +1,5 @@
+import appRoute from '../components/AppRoute';
+import MemberLayout from '../layouts/MemberLayout';
 import React, { Component } from 'react';
 import FormHelper from '../services/FormHelper';
 import ApiHelper from '../services/ApiHelper'
@@ -23,7 +25,7 @@ class NewProject extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log(this.state)
+    console.log(this.state);
     if (this.validate()) {
       ApiHelper.post('/project', {
         name: this.state.name,
@@ -78,4 +80,4 @@ class NewProject extends Component {
   }
 }
 
-export default NewProject;
+export default appRoute(MemberLayout, true)(NewProject);

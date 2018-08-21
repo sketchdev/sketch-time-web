@@ -1,3 +1,5 @@
+import appRoute from '../components/AppRoute';
+import MemberLayout from '../layouts/MemberLayout';
 import React, { Component } from 'react';
 import ApiHelper from '../services/ApiHelper'
 import EntryForm from '../components/EntryForm'
@@ -51,9 +53,9 @@ class EnterTime extends Component {
         console.error(err);
       });
     let userEntries = await this.getUserEntries();
-    let weekTotal, sunTotal, monTotal, tueTotal, wedTotal, thuTotal, friTotal, satTotal = '0.0'
+    let weekTotal, sunTotal, monTotal, tueTotal, wedTotal, thuTotal, friTotal, satTotal = '0.0';
     if (userEntries) {
-      entryProjects = this.getEntryProjects(userEntries)
+      entryProjects = this.getEntryProjects(userEntries);
       weekTotal = this.getWeekTotal(userEntries);
       sunTotal = this.getCurrentTotal(userEntries, 0);
       monTotal = this.getCurrentTotal(userEntries, 1);
@@ -67,8 +69,8 @@ class EnterTime extends Component {
     if (!userEntries || userEntries.length === 0) {
       let previousEntries = await this.getPreviousEntries();
       if (previousEntries) {
-        let previousEntriesprojects = previousEntries.map(e => { return e.project_id; })
-        userProjects = userProjects.concat(previousEntriesprojects)
+        let previousEntriesprojects = previousEntries.map(e => { return e.project_id; });
+        userProjects = userProjects.concat(previousEntriesprojects);
         userProjects = uniq(userProjects)
       }
     }
@@ -89,9 +91,9 @@ class EnterTime extends Component {
     let entryProjects = [];
     if (prevState.week !== week || prevState.year !== year) {
       let userEntries = await this.getUserEntries();
-      let weekTotal, sunTotal, monTotal, tueTotal, wedTotal, thuTotal, friTotal, satTotal = '0.0'
+      let weekTotal, sunTotal, monTotal, tueTotal, wedTotal, thuTotal, friTotal, satTotal = '0.0';
       if (userEntries) {
-        entryProjects = this.getEntryProjects(userEntries)
+        entryProjects = this.getEntryProjects(userEntries);
         weekTotal = this.getWeekTotal(userEntries);
         sunTotal = this.getCurrentTotal(userEntries, 0);
         monTotal = this.getCurrentTotal(userEntries, 1);
@@ -103,13 +105,13 @@ class EnterTime extends Component {
       }
 
       if (!userEntries || userEntries.length === 0) {
-        let previousEntries = await this.getPreviousEntries()
+        let previousEntries = await this.getPreviousEntries();
         if (previousEntries) {
           userProjects = previousEntries.map(e => { return e.project_id; })
         }
       }
 
-      let newEntries = this.getNewEntries(userProjects, entryProjects)
+      let newEntries = this.getNewEntries(userProjects, entryProjects);
 
       this.setState({
         week, year, weekTotal, sunTotal, monTotal, tueTotal, wedTotal, thuTotal, friTotal, satTotal,
@@ -144,16 +146,16 @@ class EnterTime extends Component {
   }
 
   getNewEntries(userProjects, entryProjects) {
-    let newEntries = []
+    let newEntries = [];
     userProjects.forEach(up => {
       if (!entryProjects.includes(up)) {
         let entry = {
           project_id: up,
           days: ['', '', '', '', '', '', '']
-        }
+        };
         newEntries.push(entry);
       }
-    })
+    });
     return newEntries;
   }
 
@@ -181,7 +183,7 @@ class EnterTime extends Component {
         this.setState({submitSaved: true})
       } else {
         this.setState(prevState => {
-          let errors = Object.assign({}, prevState.errors, entryErrors)
+          let errors = Object.assign({}, prevState.errors, entryErrors);
           return { errors, submitSaved: false };
         });
       }
@@ -212,7 +214,7 @@ class EnterTime extends Component {
     e.preventDefault();
     const value = e.target.value;
     this.setState((prevState, props) => {
-      let days = prevState.entries[entriesIndex].days
+      let days = prevState.entries[entriesIndex].days;
       days[dayIndex] = value;
 
       return {
@@ -245,7 +247,7 @@ class EnterTime extends Component {
           const weekTotal = this.getWeekTotal(prevState.entries);
 
           let errors = prevState.errors;
-          delete errors[`entry${entryIndex}-${dayIndex}`]
+          delete errors[`entry${entryIndex}-${dayIndex}`];
           return {
             [`${days[dayIndex]}Total`]: currentTotal,
             weekTotal: weekTotal,
@@ -322,7 +324,7 @@ const Container = styled.div`
   & button {
     padding: .5rem .5rem .3rem .5rem;
   }
-`
+`;
 
 function getPreviousWeekAndYear(week, year) {
   if (week === 1) {
@@ -342,4 +344,4 @@ function getNextWeekLink(week, year, value) {
   }
 }
 
-export default EnterTime;
+export default appRoute(MemberLayout, true)(EnterTime);

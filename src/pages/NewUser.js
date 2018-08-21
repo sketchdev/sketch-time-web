@@ -1,3 +1,5 @@
+import appRoute from '../components/AppRoute';
+import MemberLayout from '../layouts/MemberLayout';
 import React, { Component } from 'react';
 import FormHelper from '../services/FormHelper'
 import ApiHelper from '../services/ApiHelper'
@@ -21,14 +23,14 @@ class NewUser extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log(this.state)
+    console.log(this.state);
     if (this.validate()) {
       ApiHelper.post('/users', {
         firstName: this.state.firstName,
         lastName: this.state.lastName,
         email: this.state.email,
         password: this.state.password
-      })
+      });
       this.props.history.push('/users')
     }
   }
@@ -67,4 +69,4 @@ class NewUser extends Component {
   }
 }
 
-export default NewUser;
+export default appRoute(MemberLayout, true)(NewUser);

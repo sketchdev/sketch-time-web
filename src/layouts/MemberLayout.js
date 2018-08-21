@@ -9,7 +9,7 @@ class MemberLayout extends Component {
     return (
       <div>
         <Sidebar/>
-        {this.props.user && <Header user={this.props.user} onLogout={this.props.setUser}/>}
+        {this.props.userContext.user && <Header userContext={this.props.userContext} />}
         <Main>
           { this.props.children }
         </Main>

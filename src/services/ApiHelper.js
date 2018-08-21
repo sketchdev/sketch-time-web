@@ -135,7 +135,13 @@ function handlePromise(promise, jsonResponse=true) {
 
 function toJsonIfPresent(txt) {
   if (txt) {
-    return JSON.parse(txt);
+    try {
+      return JSON.parse(txt);
+    } catch (err) {
+      console.error(err);
+      return txt;
+    }
+    
   } else {
     return null;
   }

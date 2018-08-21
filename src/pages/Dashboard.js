@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import MemberLayout from '../layouts/MemberLayout';
+import appRoute from '../components/AppRoute';
 
 class Dashboard extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       projects: []
     }
@@ -21,4 +23,4 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+export default appRoute(MemberLayout, true)(Dashboard);

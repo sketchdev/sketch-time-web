@@ -1,3 +1,5 @@
+import appRoute from '../components/AppRoute';
+import MemberLayout from '../layouts/MemberLayout';
 import React, { Component } from 'react';
 import ApiHelper from '../services/ApiHelper'
 import FormHelper from '../services/FormHelper'
@@ -30,7 +32,7 @@ class NewClient extends Component {
     if (this.state.isEditing) {
       ApiHelper.get('/client/' + this.state.id)
         .then(response => {
-          console.log(response.data)
+          console.log(response.data);
           this.setState({
             name: response.data.name,
             address: response.data.address,
@@ -165,4 +167,4 @@ const ButtonGroup = styled.div`
   }
 `;
 
-export default NewClient;
+export default appRoute(MemberLayout, true)(NewClient);

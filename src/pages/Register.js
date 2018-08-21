@@ -1,8 +1,9 @@
+import appRoute from '../components/AppRoute';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import ApiHelper from '../services/ApiHelper';
-import AuthHelper from '../services/AuthHelper';
 import UserForm from '../components/UserForm';
+import LoginLayout from '../layouts/LoginLayout';
 
 class Register extends Component {
   
@@ -11,7 +12,7 @@ class Register extends Component {
     if (res.errors) {
       this.props.history.push('/');
     } else {
-      AuthHelper.storeToken(res.data.token);
+      this.props.userContext.createSession(res.data.token);
       this.props.history.push('/dashboard');
     }
   };
@@ -43,4 +44,4 @@ const Header = styled.div`
   font-size: 35px;
 `;
 
-export default Register;
+export default appRoute(LoginLayout)(Register);

@@ -1,3 +1,5 @@
+import appRoute from '../components/AppRoute';
+import MemberLayout from '../layouts/MemberLayout';
 import React, { Component } from 'react';
 import ApiHelper from '../services/ApiHelper'
 import Table from '../components/Table'
@@ -44,4 +46,4 @@ class ProjectList extends Component {
   }
 }
 
-export default ProjectList;
+export default appRoute(MemberLayout, true)(ProjectList);

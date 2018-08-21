@@ -1,20 +1,22 @@
+import appRoute from '../components/AppRoute';
+import MemberLayout from '../layouts/MemberLayout';
 import React, { Component } from 'react';
 import ProfilePic from '../components/ProfilePic';
 import Button from '../components/Button';
-import PropTypes from 'prop-types';
 
 class UserProfile extends Component {
 
   render() {
+    const user = this.props.userContext.user;
     return (
       <div>
         <h1>Profile</h1>
         <div>
           <div>
-            <ProfilePic className={'mr3'} size={'large'} email={this.props.user.email}/>
+            <ProfilePic className={'mr3'} size={'large'} email={user.email}/>
             <div className={'inline-block ml2 align-middle'}>
-              <h2 className={'m0 mb1 p0'}>{this.props.user.firstName} {this.props.user.lastName}</h2>
-              <p className={'m0 p0'}>{this.props.user.email}</p>
+              <h2 className={'m0 mb1 p0'}>{user.firstName} {user.lastName}</h2>
+              <p className={'m0 p0'}>{user.email}</p>
             </div>
           </div>
           <div className={'mt3'}>
@@ -28,8 +30,4 @@ class UserProfile extends Component {
 
 }
 
-UserProfile.propTypes = {
-  user: PropTypes.object,
-};
-
-export default UserProfile;
+export default appRoute(MemberLayout, true)(UserProfile);

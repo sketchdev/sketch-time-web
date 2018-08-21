@@ -3,6 +3,8 @@ import ApiHelper from '../services/ApiHelper'
 import StyledTable from '../components/StyledTable';
 import { FaPlus, FaCheck } from 'react-icons/fa'
 import styled from 'styled-components';
+import MemberLayout from '../layouts/MemberLayout';
+import appRoute from '../components/AppRoute';
 
 class UserProjectList extends Component {
   constructor(props) {
@@ -104,4 +106,4 @@ const CheckButton = PlusButton.extend`
   }
 `;
 
-export default UserProjectList;
+export default appRoute(MemberLayout, true)(UserProjectList);

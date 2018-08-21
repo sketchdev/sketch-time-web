@@ -1,11 +1,11 @@
+import appRoute from '../components/AppRoute';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import ApiHelper from '../services/ApiHelper';
 import FormHelper from '../services/FormHelper';
-import AuthHelper from '../services/AuthHelper';
 import { Redirect } from 'react-router';
-import PropTypes from 'prop-types';
+import LoginLayout from '../layouts/LoginLayout';
 
 class Home extends Component {
   constructor(props) {
@@ -28,14 +28,13 @@ class Home extends Component {
         error: (res.errors.base || {}).messages[0] || 'something went wrong'
       });
     } else {
-      const user = AuthHelper.storeToken(res.data.token);
-      this.props.setUser(user);
+      this.props.userContext.createSession(res.data.token);
       this.props.history.push('/dashboard');
     }
   };
 
   render() {
-    if (this.props.user) {
+    if (this.props.userContext.user) {
       return <Redirect to={'/dashboard'} />;
     }
     
@@ -60,11 +59,6 @@ class Home extends Component {
   }
 }
 
-Home.propTypes = {
-  setUser: PropTypes.func.isRequired,
-  user: PropTypes.object,
-};
-
 const Body = styled.div`
   margin: 0 auto;
   width: 400px;
@@ -80,4 +74,4 @@ const Login = styled.div`
   margin: 0 auto 45px;
   font-size: 35px;
 `;
-export default Home;
+export default appRoute(LoginLayout)(Home);
