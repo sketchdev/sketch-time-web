@@ -33,7 +33,7 @@ class UserList extends Component {
           <Link to={'/users/new'}><button className={'btn-small pull-right'}>New User</button></Link>
         </div>
         <Table
-          headers={[
+          data={[
             {title: 'First Name', field: 'firstName'},
             {title: 'Last Name', field: 'lastName'},
             {title: 'Email', field: 'email'},

@@ -35,7 +35,7 @@ class ClientList extends Component {
         <Table
           type={'client'}
           listPage={'/clients'}
-          headers={[
+          data={[
             {title: 'Name', field: 'name'},
             {title: 'Address', field: 'address'},
             {title: 'City', field: 'city'},
@@ -44,7 +44,6 @@ class ClientList extends Component {
           ]}
           list={this.state.clients}
           edit={'/clients/edit/'}
-          delete={'/clients/delete/'}
         />
       </div>
     );

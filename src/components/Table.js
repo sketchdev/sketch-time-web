@@ -10,24 +10,27 @@ class Table extends Component {
       <StyledTable>
         <thead>
           <tr>
-            { this.props.headers.map((header, index) => {
-              return <th key={index}>{header.title}</th>;
+            { this.props.data.map((data, index) => {
+              return <th key={index}>{data.title}</th>;
             })}
             { (this.props.edit || this.props.delete) && <th/> }
           </tr>
         </thead>
         <tbody>
-          { this.props.list && this.props.list.map((l, index) => {
+          { this.props.list && this.props.list.map((item, index) => {
             return <tr key={index}>
-              { this.props.headers.map((header, index) => {
-                return <td key={index}>{l[header.field]}</td>;
+              { this.props.data.map((data, index) => {
+                return <td key={index}>
+                  { data.options ? (item[data.field] ? data.options.find(o => { return o.id === item[data.field] }).name : '') : item[data.field] }
+                  </td>;
               })}
+
               { (this.props.edit || this.props.delete) && <td>
-                { this.props.edit && <Link to={this.props.edit + l.id}><Pencil/></Link> }
+                { this.props.edit && <Link to={this.props.edit + item.id}><Pencil/></Link> }
                 { this.props.delete && <Link to={
                   {
                     pathname: this.props.delete,
-                    state: { type: this.props.type, id: l.id, listPage: this.props.listPage }
+                    state: { type: this.props.type, id: item.id, listPage: this.props.listPage }
                   }}><TrashCan/></Link> }
               </td> }
             </tr>;

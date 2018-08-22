@@ -3,7 +3,7 @@ import MemberLayout from '../layouts/MemberLayout';
 import React, { Component } from 'react';
 import ApiHelper from '../services/ApiHelper'
 import FormHelper from '../services/FormHelper'
-import InputGroup from '../components/Input'
+import FormInput from '../components/FormInput';
 import validator from 'validator';
 import Button from '../components/Button';
 import styled from 'styled-components';
@@ -23,8 +23,6 @@ class NewClient extends Component {
       errors: {}
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.validate = this.validate.bind(this);
     this.handleChange = FormHelper.handleChanger(this);
   }
 
@@ -44,55 +42,32 @@ class NewClient extends Component {
     }
   }
 
-  handleSubmit() {
+  handleSubmit = async () => {
     if (this.validate()) {
+      const data = {
+        name: this.state.name,
+        address: this.state.address,
+        city: this.state.city,
+        state: this.state.state,
+        zip: this.state.zip
+      };
+
+      let res;
       if (this.state.isEditing) {
-        ApiHelper.put('/client/' + this.state.id, {
-          name: this.state.name,
-          address: this.state.address,
-          city: this.state.city,
-          state: this.state.state,
-          zip: this.state.zip
-        }).then(response => {
-          if (response.errors) {
-            this.setState({
-              errors: {base: 'Invalid request. Please try again later.'}
-            })
-          } else {
-            this.props.history.push('/clients')
-          }
-        }, (err) => {
-          console.log('Put error', err);
-          this.setState({
-            errors: {base: 'Invalid request. Please try again later.'}
-          })
-        });
+        res = await ApiHelper.put('/client/' + this.state.id, data);
       } else {
-        ApiHelper.post('/client', {
-          name: this.state.name,
-          address: this.state.address,
-          city: this.state.city,
-          state: this.state.state,
-          zip: this.state.zip
-        }).then(response => {
-          if (response.errors) {
-            this.setState({
-              base: response.errors
-            })
-          } else {
-            this.props.history.push('/clients')
-          }
-        }, (err) => {
-          console.log(err);
-          this.setState({
-            errors: {base: 'Invalid request. Please try again later.'}
-          })
-        });
+        res = await ApiHelper.post('/client', data);
+      }
+
+      if (res.errors) {
+        this.setState({ serverErrors: res.errors });
+      } else {
+        this.props.history.push('/clients');
       }
     }
   }
 
-  validate() {
+  validate = () => {
     let errors = {};
     if (this.state.name === '') {
       errors.name = 'This is required field'
@@ -111,38 +86,39 @@ class NewClient extends Component {
         <div><h1>{this.state.isEditing ? 'Edit Client' : 'New Client'}</h1></div>
         {this.state.errors.base && <p className={'error'}>{this.state.errors.base}</p>}
           <div className="container">
-            <InputGroup
+            <FormInput
               type={'text'}
-              id={'name'}
+              name={'name'}
               placeholder={'Name'}
               onChange={this.handleChange}
-              error={this.state.errors.name}
+              error={!!this.state.errors.name}
+              help={this.state.errors.name}
               value={this.state.name}
             />
-            <InputGroup
+            <FormInput
               type={'text'}
-              id={'address'}
+              name={'address'}
               placeholder={'Address'}
               onChange={this.handleChange}
               value={this.state.address}
             />
-            <InputGroup
+            <FormInput
               type={'text'}
-              id={'city'}
+              name={'city'}
               placeholder={'City'}
               onChange={this.handleChange}
               value={this.state.city}
             />
-            <InputGroup
+            <FormInput
               type={'text'}
-              id={'state'}
+              name={'state'}
               placeholder={'State'}
               onChange={this.handleChange}
               value={this.state.state}
             />
-            <InputGroup
+            <FormInput
               type={'text'}
-              id={'zip'}
+              name={'zip'}
               placeholder={'Zip'}
               onChange={this.handleChange}
               error={this.state.errors.zip}

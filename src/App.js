@@ -42,6 +42,7 @@ class App extends Component {
           <Route path='/users' exact render={(props) => this.withProps(props, UserList) }/>
           <Route path='/profile' exact render={(props) => this.withProps(props, UserProfile) }/>
           <Route path='/profile/edit' exact render={(props) => this.withProps(props, UserProfileEdit) }/>
+          <Route path='/projects/edit/:id' render={(props) => this.withProps(props, NewProject) }/>
           <Route path='/projects/new' render={(props) => this.withProps(props, NewProject) }/>
           <Route path='/projects' render={(props) => this.withProps(props, ProjectList) }/>
           <Route exact path='/clients/new' render={(props) => this.withProps(props, NewClient) }/>
@@ -55,24 +56,24 @@ class App extends Component {
       </UserContext.Provider>
     );
   }
-  
+
   withProps = (props, Component) => {
     return <Component userContext={this.state.userContext} {...props} />
   };
-  
+
   updateUser = (user) => {
     this.setState(prevState => ({
       userContext: {...prevState.userContext, user: user}
     }));
   };
-  
+
   clearSession = () => {
     AuthHelper.clearSession();
     this.setState(prevState => ({
       userContext: {...prevState.userContext, user: null}
     }));
   };
-  
+
   createSession = (token) => {
     const user = AuthHelper.storeToken(token);
     this.setState(prevState => ({

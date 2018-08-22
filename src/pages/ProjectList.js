@@ -14,15 +14,24 @@ class ProjectList extends Component {
     };
   }
 
-  componentDidMount() {
-    ApiHelper.get('/project')
+  async componentDidMount() {
+    let projects = await ApiHelper.get('/project')
       .then(response => {
-        this.setState({
-          projects: response.data
-        })
+        return response.data;
       }, (err) => {
         console.log(err);
       });
+
+    let clients = await ApiHelper.get('/client')
+      .then(response => {
+        return response.data;
+      }, (err) => {
+        console.log(err);
+      });
+
+    this.setState({
+      projects, clients
+    })
   }
 
   render() {
@@ -31,15 +40,18 @@ class ProjectList extends Component {
         <h1 className={'pull-left'}>Projects</h1>
         <Link to={'/projects/new'}><button className={'btn-small pull-right'}>New Project</button></Link>
         <Table
-          headers={[
+          type={'project'}
+          listPage={'/projects'}
+          data={[
             {title: 'Name', field: 'name'},
             {title: 'Start Date', field: 'startDate'},
             {title: 'End Date', field: 'endDate'},
-            {title: 'Client', field: 'client'},
+            {title: 'Client', field: 'clientId', options: this.state.clients},
             {title: 'Code', field: 'code'},
             {title: 'Description', field: 'description'},
           ]}
           list={this.state.projects}
+          edit={'/projects/edit/'}
         />
       </div>
     );
